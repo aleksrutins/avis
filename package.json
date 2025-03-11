@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-transform-types server.ts",
-    "preinstall": "git submodule update --init && make build-essentia",
+    "preinstall": "make fetchdeps",
     "dev": "nodemon --exec node --experimental-transform-types server.ts"
   },
   "author": "",
