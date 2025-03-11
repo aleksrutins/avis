@@ -9,6 +9,7 @@
     "start": "node --experimental-transform-types server.ts",
     "preinstall": "make fetchdeps",
     "prepare": "true",
+    "build": "node-gyp build",
     "dev": "nodemon --exec node --experimental-transform-types server.ts"
   },
   "author": "",
