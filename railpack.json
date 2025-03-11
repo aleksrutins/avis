@@ -1,8 +1,8 @@
 {
     "$schema": "https://schema.railpack.com",
     "provider": "node",
-    "buildAptPackages": ["...", "libeigen3-dev", "python3", "libpython3-dev", "gcc", "make"],
+    "buildAptPackages": ["libeigen3-dev", "python3", "libpython3-dev", "gcc", "make"],
     "deploy": {
-        "aptPackages": ["...",  "libeigen3-dev", "ffmpeg"]
+        "aptPackages": ["libeigen3-dev", "ffmpeg"]
     }
 }
