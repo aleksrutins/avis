@@ -2,9 +2,13 @@ import express from 'express'
 import morgan from 'morgan'
 import multer from 'multer'
 import tmp from 'tmp'
-import { generateSpectrogram } from './lib/visualize.ts'
 import fs from 'fs'
 import path from 'path'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+
+const { generateSpectrograph } = require("./build/Release/visualize")
 
 const app = express();
 
@@ -76,44 +80,45 @@ app.get('/', (req, res) => {
 })
 
 app.post('/api/spectrogram', upload.single('audioFile'), async (req, res) => {
-    if (!req.file) {
-         res.status(400).json({ error: 'No audio file uploaded' });
-         return
-      }
+    // if (!req.file) {
+    //      res.status(400).json({ error: 'No audio file uploaded' });
+    //      return
+    //   }
       
-      try {
-        // Parse options from request body
-        const options = {
-          frameSize: parseInt(req.body.frameSize) || 2048,
-          hopSize: parseInt(req.body.hopSize) || 1024,
-          width: parseInt(req.body.width) || 800,
-          height: parseInt(req.body.height) || 400,
-          fps: parseInt(req.body.fps) || 30
-        };
+    //   try {
+    //     // Parse options from request body
+    //     const options = {
+    //       frameSize: parseInt(req.body.frameSize) || 2048,
+    //       hopSize: parseInt(req.body.hopSize) || 1024,
+    //       width: parseInt(req.body.width) || 800,
+    //       height: parseInt(req.body.height) || 400,
+    //       fps: parseInt(req.body.fps) || 30
+    //     };
         
-        // Generate spectrogram
-        const outputPath = await generateSpectrogram(req.file.path, options);
+    //     // Generate spectrogram
+    //     const outputPath = await generateSpectrogram(req.file.path, options);
         
-        // Set appropriate headers
-        res.setHeader('Content-Type', 'video/mp4');
-        res.setHeader('Content-Disposition', `attachment; filename="spectrogram.mp4"`);
+    //     // Set appropriate headers
+    //     res.setHeader('Content-Type', 'video/mp4');
+    //     res.setHeader('Content-Disposition', `attachment; filename="spectrogram.mp4"`);
         
-        // Stream the file to the client
-        const fileStream = fs.createReadStream(outputPath);
-        fileStream.pipe(res);
+    //     // Stream the file to the client
+    //     const fileStream = fs.createReadStream(outputPath);
+    //     fileStream.pipe(res);
         
-        // Clean up when done
-        fileStream.on('end', () => {
-          // Delete temporary files
-          fs.unlinkSync(outputPath);
-          fs.unlinkSync(req.file!.path);
-          fs.rmdirSync(path.dirname(req.file!.path), { recursive: true });
-        });
-      } catch (error) {
-        console.error('Error generating spectrogram:', error);
-         res.status(500).json({ error: 'Failed to generate spectrogram' });
-      }
+    //     // Clean up when done
+    //     fileStream.on('end', () => {
+    //       // Delete temporary files
+    //       fs.unlinkSync(outputPath);
+    //       fs.unlinkSync(req.file!.path);
+    //       fs.rmdirSync(path.dirname(req.file!.path), { recursive: true });
+    //     });
+    //   } catch (error) {
+    //     console.error('Error generating spectrogram:', error);
+    //      res.status(500).json({ error: 'Failed to generate spectrogram' });
+    //   }
     
+    res.status(200).send(generateSpectrograph());
 })
 
 app.listen(3000, () => console.log("listening on 3000"))

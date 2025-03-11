@@ -106,9 +106,9 @@ export async function generateSpectrogram(audioFilePath: string, options: Spectr
       const ctx = canvas.getContext('2d');
       
      // Calculate how many frames to process
-    const durationInSeconds = audioData.length / config.sampleRate;
+    const durationInSeconds = audioData.length / config.sampleRate!;
     const totalFrames = Math.floor(durationInSeconds * config.fps);
-    const samplesPerFrame = Math.floor(config.sampleRate / config.fps);
+    const samplesPerFrame = Math.floor(config.sampleRate! / config.fps);
     
     console.log(`Audio duration: ${durationInSeconds.toFixed(2)}s, Total frames: ${totalFrames}`);
     
@@ -140,16 +140,14 @@ export async function generateSpectrogram(audioFilePath: string, options: Spectr
       
       // Compute spectrogram using essentia
       const vec = essentia.arrayToVector(windowedChunk)
-      console.log(vec)
       const spectrum = essentia.Spectrum(vec);
       const spectrumValues = spectrum.spectrum;
-      console.log(spectrumValues)
       
       // Specify the frequency range to display (discard upper frequencies for better visualization)
-      const maxBin = Math.min(spectrumValues.length / 2, Math.floor(config.sampleRate / 4)); // Display up to 1/4 of sampleRate
+      const maxBin = Math.min(spectrumValues.length / 2, Math.floor(config.sampleRate! / 4)); // Display up to 1/4 of sampleRate
       
       // Calculate frequency step and draw frequency labels
-      const freqStep = config.sampleRate / config.frameSize;
+      const freqStep = config.sampleRate! / config.frameSize;
       ctx.fillStyle = 'gray';
       ctx.font = '10px Arial';
       for (let freq = 1000; freq < (maxBin * freqStep); freq += 1000) {
@@ -172,7 +170,7 @@ export async function generateSpectrogram(audioFilePath: string, options: Spectr
             
         // Draw vertical line representing this frequency bin
         const x = i * binWidth;
-        const height = normalized * config.height;
+        const height = spectrumValues[i] * config.height;
         ctx.fillStyle = `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
         ctx.fillRect(x, config.height - height, binWidth + 0.5, height); // +0.5 to avoid gaps
       }
@@ -180,7 +178,7 @@ export async function generateSpectrogram(audioFilePath: string, options: Spectr
       // Add time markers
       ctx.fillStyle = 'white';
       ctx.font = '12px Arial';
-      const currentTime = (startSample / config.sampleRate).toFixed(1);
+      const currentTime = (startSample / config.sampleRate!).toFixed(1);
       ctx.fillText(`Time: ${currentTime}s`, 10, 20);
       
       // Save the frame
