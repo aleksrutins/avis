@@ -6,7 +6,6 @@ fetchdeps: essentia_build
 essentia_clone: ./deps
 	wget https://github.com/MTG/essentia/archive/refs/heads/master.zip -O deps/essentia.zip ;\
 	unzip -o deps/essentia.zip -d deps ;\
-	rm -rf deps/essentia ;\
 	mv -f deps/essentia-master deps/essentia
 
 essentia_build: essentia_clone
