@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-transform-types server.ts",
     "preinstall": "make fetchdeps",
-    "prepare": "true",
+    "postinstall": "node-gyp configure",
     "build": "node-gyp build",
     "dev": "nodemon --exec node --experimental-transform-types server.ts"
   },
