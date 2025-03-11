@@ -1,7 +1,7 @@
 {
     "$schema": "https://schema.railpack.com",
     "provider": "node",
-    "buildAptPackages": ["...", "libeigen3-dev", "python", "libpython3-dev", "build-essential", "make"],
+    "buildAptPackages": ["...", "libeigen3-dev", "python3", "libpython3-dev", "build-essential", "make"],
     "deploy": {
         "aptPackages": ["...",  "libeigen3-dev", "ffmpeg"]
     }
